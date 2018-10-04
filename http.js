@@ -19,7 +19,7 @@ module.exports = {
                 method: urlObject.method,
                 headers: urlObject.headers,
                 auth: auth,
-                rejectUnauthorized: false
+                strictSSL: urlObject.strictSSL
             },
             (error, response, body) => {
                 callback(error, response, body);

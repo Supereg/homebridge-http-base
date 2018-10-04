@@ -9,7 +9,8 @@ module.exports = {
                 username: undefined,
                 password: undefined
             },
-            headers: {}
+            headers: {},
+            strictSSL: false
         };
     },
 
