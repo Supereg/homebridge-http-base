@@ -4,7 +4,7 @@
   "description": "Base and utils for homebridge-http devices",
   "license": "ISC",
   "scripts": {
-    "test": "node ./test/init.js"
+    "test": "node ./test/test.js"
   },
   "repository": {
     "type": "git",
