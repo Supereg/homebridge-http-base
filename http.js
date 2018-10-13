@@ -27,12 +27,9 @@ module.exports = {
         )
     },
 
-    multipleHttpRequests: function (urlObjectArray, callback, asyncFunction) {
+    multipleHttpRequests: function (urlObjectArray, callback) {
         if (urlObjectArray.length === 0)
             throw new Error("Empty urlObject array");
-
-        if (!asyncFunction)
-            asyncFunction = async.parallel;
 
         const taskArray = new Array(urlObjectArray.length);
 
@@ -42,7 +39,7 @@ module.exports = {
             taskArray[i] = callback => this.httpRequest(urlObject, callback); // callback gets (error, response, body)
         }
 
-        asyncFunction(async.reflectAll(taskArray), (ignored, results) => {
+        async.parallel(async.reflectAll(taskArray), (ignored, results) => {
             const callbackArray = new Array(results.length);
 
             for (let i = 0; i < results.length; i++) {
