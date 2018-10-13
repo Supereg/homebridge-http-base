@@ -6,7 +6,7 @@ module.exports = {
     httpRequest: function (urlObject, callback) {
         let auth = undefined;
 
-        if (urlObject.auth.username && urlObject.auth.password) {
+        if (urlObject.auth && urlObject.auth.username && urlObject.auth.password) {
             auth = {};
             auth.username = urlObject.auth.username;
             auth.password = urlObject.auth.password;
@@ -16,7 +16,7 @@ module.exports = {
             {
                 url: urlObject.url,
                 body: urlObject.body,
-                method: urlObject.method,
+                method: urlObject.method || "GET",
                 headers: urlObject.headers,
                 auth: auth,
                 strictSSL: urlObject.strictSSL
