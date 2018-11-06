@@ -7,7 +7,8 @@ module.exports = {
             body: "",
             auth: {
                 username: undefined,
-                password: undefined
+                password: undefined,
+                sendImmediately: undefined || true
             },
             headers: {},
             strictSSL: false
@@ -95,6 +96,9 @@ module.exports = {
         if (property.auth) {
             urlObject.auth.username = property.auth.username;
             urlObject.auth.password = property.auth.password;
+
+            if (property.auth.sendImmediately)
+                urlObject.auth.sendImmediately = property.auth.sendImmediately;
         }
 
         if (property.headers)
