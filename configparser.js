@@ -8,7 +8,7 @@ module.exports = {
             auth: {
                 username: undefined,
                 password: undefined,
-                sendImmediately: undefined || true
+                sendImmediately: true
             },
             headers: {},
             strictSSL: false
