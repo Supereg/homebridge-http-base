@@ -97,7 +97,7 @@ module.exports = {
             urlObject.auth.username = property.auth.username;
             urlObject.auth.password = property.auth.password;
 
-            if (property.auth.sendImmediately)
+            if (typeof property.auth.sendImmediately === "boolean")
                 urlObject.auth.sendImmediately = property.auth.sendImmediately;
         }
 
