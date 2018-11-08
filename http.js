@@ -34,7 +34,7 @@ module.exports = {
             auth.username = urlObject.auth.username;
             auth.password = urlObject.auth.password;
 
-            if (urlObject.auth.sendImmediately)
+            if (typeof urlObject.auth.sendImmediately !== "undefined")
                 auth.sendImmediately = urlObject.auth.sendImmediately;
         }
 
