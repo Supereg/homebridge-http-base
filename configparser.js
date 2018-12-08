@@ -142,6 +142,8 @@ module.exports = {
             throw new Error("'reconnectPeriod' must be a number (in milliseconds)!");
         if (property.connectTimeout && typeof property.connectTimeout !== "number")
             throw new Error("'connectTimeout' must be a number (in milliseconds)!");
+        if (property.clientId && typeof property.clientId !== "string")
+            throw new Error("'clientId' must be a string!");
 
 
         let mqttOptions = {};
@@ -161,6 +163,7 @@ module.exports = {
         mqttOptions.clean = property.clean;
         mqttOptions.reconnectPeriod = property.reconnectPeriod;
         mqttOptions.connectTimeout = property.connectTimeout;
+        mqttOptions.clientId = property.clientId;
 
         mqttOptions.subscriptions = this.parseMQTTSubscriptions(property.subscriptions);
 
