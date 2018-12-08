@@ -75,7 +75,7 @@ MQTTClient.prototype = {
         if (error.message === "Connection refused: Not authorized")
             this.client.end(); // mqtt library would try to reconnect every second
 
-        this.error("MQTT error occurred: " + error.message);
+        this.log.error("MQTT error occurred: " + error.message);
     },
 
     _message: function (topic, message) {
