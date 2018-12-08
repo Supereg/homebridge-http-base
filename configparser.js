@@ -209,6 +209,8 @@ module.exports = {
         if (typeof property.characteristic !== "string")
             throw new Error("'subscriptions.characteristic' must be a string!");
 
+        if (property.qos && typeof property.qos !== "number")
+            throw new Error("'subscriptions.characteristic' must be a number!");
         if (property.messagePattern && typeof property.messagePattern !== "string")
             throw new Error("'subscriptions.messagePattern' must be a string!");
         if (property.patternGroupToExtract && typeof property.patternGroupToExtract != "number")
@@ -217,6 +219,7 @@ module.exports = {
         let subscription = {};
         subscription.topic = property.topic;
         subscription.characteristic = property.characteristic;
+        subscription.qos = property.qos? Math.abs(property.qos % 3): 1; // 1 is the appropriate default here
 
         subscription.messagePattern = property.messagePattern;
         subscription.patternGroupToExtract = property.patternGroupToExtract || 1;

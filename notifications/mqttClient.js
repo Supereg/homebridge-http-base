@@ -21,6 +21,7 @@ function MQTTClient(service, options, log) {
 
         this.subscriptions[subscription.topic] = {
             characteristic: characteristicName,
+            qos: subscription.qos,
             messagePattern: subscription.messagePattern? new RegExp(subscription.messagePattern): undefined,
             patternGroupToExtract: subscription.patternGroupToExtract,
             isBool: isBool
@@ -58,7 +59,10 @@ MQTTClient.prototype = {
             if (!this.subscriptions.hasOwnProperty(topic))
                 continue;
 
-            this.client.subscribe(topic, error => {
+            const subscription = this.subscriptions[topic];
+            this.client.subscribe(topic, {
+                qos: subscription.qos
+            }, error => {
                 if (error)
                     this.log.error(`MQTT error occurred while subscribing to topic ${topic}: ${error.message}`);
                 else
