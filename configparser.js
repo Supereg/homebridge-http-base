@@ -11,7 +11,8 @@ module.exports = {
                 sendImmediately: true
             },
             headers: {},
-            strictSSL: false
+            strictSSL: false,
+            requestTimeout: 20000, // default 20s timeout
         };
     },
 
@@ -82,6 +83,10 @@ module.exports = {
         if (property.auth && !(property.auth.username && property.auth.password))
             throw new Error("'auth.username' and/or 'auth.password' was not set!");
         // TODO validate property.headers; ensure it is object with key value pair of strings
+        if (property.strictSSL && typeof property.strictSSL !== "boolean")
+            throw new Error("'strictSSL' must be a boolean!");
+        if (property.requestTimeout && typeof property.requestTimeout !== "number")
+            throw new Error("'requestTimeout' must be a number!");
 
         let urlObject = this.getEmptyUrlObject();
 
@@ -103,6 +108,11 @@ module.exports = {
 
         if (property.headers)
             urlObject.headers = property.headers;
+
+        if (property.strictSSL)
+            urlObject.strictSSL = property.strictSSL;
+        if (property.requestTimeout)
+            urlObject.requestTimeout = property.requestTimeout;
 
         return urlObject
     },

@@ -45,7 +45,8 @@ module.exports = {
                 method: urlObject.method || "GET",
                 headers: urlObject.headers,
                 auth: auth,
-                strictSSL: urlObject.strictSSL
+                strictSSL: urlObject.strictSSL,
+                timeout: urlObject.requestTimeout || 20000,
             },
             (error, response, body) => {
                 callback(error, response, body);
