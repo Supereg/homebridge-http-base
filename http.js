@@ -26,6 +26,10 @@ module.exports = {
         return false;
     },
 
+    isHttpSuccessCode: function (statusCode) {
+        return Math.floor(statusCode / 100) === 2;
+    },
+
     httpRequest: function (urlObject, callback) {
         let auth = undefined;
 
