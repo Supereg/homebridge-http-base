@@ -30,7 +30,9 @@ module.exports = {
         return Math.floor(statusCode / 100) === 2;
     },
 
-    httpRequest: function (urlObject, callback) {
+    httpRequest: function (urlObject, callback, argument) {
+        let url = urlObject.url;
+        let body = urlObject.body;
         let auth = undefined;
 
         if (urlObject.auth && urlObject.auth.username && urlObject.auth.password) {
@@ -42,10 +44,16 @@ module.exports = {
                 auth.sendImmediately = urlObject.auth.sendImmediately;
         }
 
+        if (argument) {
+            url = url.replace("%s", argument)
+            if (body)
+                body = body.replace("%s", argument);
+        }
+
         request(
             {
-                url: urlObject.url,
-                body: urlObject.body,
+                url: url,
+                body: body,
                 method: urlObject.method || "GET",
                 headers: urlObject.headers,
                 auth: auth,
@@ -58,7 +66,7 @@ module.exports = {
         )
     },
 
-    multipleHttpRequests: function (urlObjectArray, callback) {
+    multipleHttpRequests: function (urlObjectArray, callback, argument) {
         if (urlObjectArray.length === 0)
             throw new Error("Empty urlObject array");
 
@@ -81,7 +89,7 @@ module.exports = {
                     return;
                 }
 
-                this.httpRequest(urlObject, callback);
+                this.httpRequest(urlObject, callback, argument);
             };
         }
 
