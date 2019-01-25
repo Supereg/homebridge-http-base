@@ -38,10 +38,10 @@ module.exports = {
 
                     try {
                         if (typeof element === "object" && element.constructor === Object) {
-                            array.push(this.parseUrlObject(element));
+                            array.push(this._parseUrlObject(element));
                         }
                         else if (typeof element === "string") {
-                            array.push(this.parseStringUrl(element));
+                            array.push(this._parseStringUrl(element));
                         }
                         else { // noinspection ExceptionCaughtLocallyJS
                             throw new Error(`Wrong data type. Expected string or object"`);
@@ -52,25 +52,25 @@ module.exports = {
                 }
             }
             else if (property.constructor === Object) {
-                array.push(this.parseUrlObject(property)); // TODO accurate error message on throw
+                array.push(this._parseUrlObject(property)); // TODO accurate error message on throw
             }
         }
         else if (typeof property === "string")
-            array.push(this.parseStringUrl(property));
+            array.push(this._parseStringUrl(property));
         else
             throw new Error("property has unsupported data type. Expected string or array");
 
         return array;
     },
 
-    parseStringUrl: function (url) { // can be outsourced
+    _parseStringUrl: function (url) { // can be outsourced
         let urlObject = this.getEmptyUrlObject();
         urlObject.url = url;
 
         return urlObject;
     },
 
-    parseUrlObject: function (property) {
+    _parseUrlObject: function (property) {
         if (!property.url)
             throw new Error("undefined 'url' property!");
 

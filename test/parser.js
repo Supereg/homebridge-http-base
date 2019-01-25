@@ -16,5 +16,5 @@ function parser1() {
         }
     };
 
-    configParser.parseUrlObject(config);
+    configParser._parseUrlObject(config);
 }
