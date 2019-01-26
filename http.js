@@ -44,7 +44,7 @@ module.exports = {
                 auth.sendImmediately = urlObject.auth.sendImmediately;
         }
 
-        if (argument) {
+        if (typeof argument !== "undefined" && argument !== null) {
             url = url.replace("%s", argument)
             if (body)
                 body = body.replace("%s", argument);
