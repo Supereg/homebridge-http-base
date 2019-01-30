@@ -30,7 +30,7 @@ module.exports = {
         return Math.floor(statusCode / 100) === 2;
     },
 
-    httpRequest: function (urlObject, callback, argument) {
+    httpRequest: function (urlObject, callback) {
         let url = urlObject.url;
         let body = urlObject.body;
         let auth = undefined;
@@ -44,10 +44,15 @@ module.exports = {
                 auth.sendImmediately = urlObject.auth.sendImmediately;
         }
 
-        if (typeof argument !== "undefined" && argument !== null) {
-            url = url.replace("%s", argument)
+        for (let i = 2; i < arguments.length; i++) {
+            const argument = arguments[i];
+            /** @namespace argument.searchValue */
+            if (typeof argument !== "object" || !argument.searchValue || !argument.replacer)
+                continue;
+
+            url = url.replace(argument.searchValue, argument.replacer);
             if (body)
-                body = body.replace("%s", argument);
+                body = body.replace(argument.searchValue, argument.replacer);
         }
 
         request(
