@@ -45,14 +45,21 @@ module.exports = {
         }
 
         for (let i = 2; i < arguments.length; i++) {
-            const argument = arguments[i];
-            /** @namespace argument.searchValue */
-            if (typeof argument !== "object" || !argument.searchValue || !argument.replacer)
+            const element = arguments[i];
+            if (typeof element !== "object")
                 continue;
 
-            url = url.replace(argument.searchValue, argument.replacer);
-            if (body)
-                body = body.replace(argument.searchValue, argument.replacer);
+            let args = element;
+            if (element.constructor === Object.constructor)
+                args = [element];
+
+            /** @namespace argument.searchValue */
+            for (let j = 0; j < args.length; j++) {
+                const argument = args[j];
+                url = url.replace(argument.searchValue, argument.replacer);
+                if (body)
+                    body = body.replace(argument.searchValue, argument.replacer);
+            }
         }
 
         request(
