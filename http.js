@@ -50,7 +50,7 @@ module.exports = {
                 continue;
 
             let args = element;
-            if (element.constructor === Object.constructor)
+            if (element.constructor === Object)
                 args = [element];
 
             /** @namespace argument.searchValue */
