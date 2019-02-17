@@ -16,6 +16,13 @@ module.exports = {
         };
     },
 
+    parsePattern: function (property) {
+        if (typeof property === "string")
+            return  new RegExp(property);
+        else
+            throw new Error("Unsupported type for pattern");
+    },
+
     parseUrlProperty: function (property) {
         if (typeof property === "object" && property.constructor === Array)
             throw new Error("property cannot be an array!");

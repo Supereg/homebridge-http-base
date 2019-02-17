@@ -94,6 +94,10 @@ MQTTClient.prototype = {
                     this.log.error(`MQTT couldn't extract value with regex pattern (value: '${value}', pattern: '${pattern}')`);
                     return;
                 }
+                if (data.patternGroupToExtract >= regexMatch.length) {
+                    this.log.error("MQTT the specified group from which the data should be extracted was out of bounds");
+                    return;
+                }
 
                 value = regexMatch[data.patternGroupToExtract];
             }

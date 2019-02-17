@@ -6,6 +6,7 @@ const PullTimer = require("./notifications/pulltimer");
 const notifications = require("./notifications/notifications");
 const MQTTClient = require("./notifications/mqttClient");
 const Cache = require("./cache");
+const utils = require("./utils");
 
 module.exports = {
     http: http,
@@ -14,4 +15,5 @@ module.exports = {
     notifications: notifications,
     MQTTClient: MQTTClient,
     Cache: Cache,
+    utils: utils,
 };
