@@ -1,0 +1,34 @@
+"use strict";
+
+module.exports = {
+
+    extractValueFromPattern: function (pattern, string, position) {
+        if (typeof position === "undefined")
+            position = 1; // default value
+
+        const matchArray = string.match(pattern);
+
+        if (matchArray === null) // pattern didn't match at all
+            throw new Error(`Pattern didn't match (value: '${value}', pattern: '${pattern}')`);
+        else if (position >= matchArray.length)
+            throw new Error("Couldn't find any group which can be extracted. The specified group from whcih the data should be extracted was out of bounds");
+        else
+            return matchArray[position];
+    },
+
+    enumValueOf: function (enumObject, property, defaultValue) {
+        let value = property || defaultValue;
+        value = value.toLowerCase();
+
+        let valid = false;
+        Object.keys(enumObject).forEach(key => {
+            const objectElement = enumObject[key];
+
+            if (value === objectElement)
+                valid = true;
+        });
+
+        return valid? value: null;
+    },
+
+};
