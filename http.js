@@ -82,7 +82,7 @@ module.exports = {
         if (urlObjectArray.length === 0)
             throw new Error("Empty urlObject array");
 
-        const taskArray = new Array(urlObjectArray.length);
+        const taskArray = [];
         const executionCounter = [];
 
         for (let i = 0; i < urlObjectArray.length; i++) {
@@ -91,7 +91,7 @@ module.exports = {
             if (executionCounter[i] === undefined)
                 executionCounter[i] = urlObject.repeat;
 
-            taskArray.push(callback, delayed => {  // callback gets (error, response, body)
+            taskArray.push(function (callback, delayed) {  // callback gets (error, response, body)
                 if (urlObject.url.startsWith("delay") && delayPattern.test(urlObject.url)) {
                     if (multipleUrlExecutionStrategy !== ExecutionStrategy.SERIES) {
                         console.warn("There was a 'delay' method specified but execution is unaffected because of unsuitable execution strategy!");
@@ -107,14 +107,14 @@ module.exports = {
                 }
 
                 if (!delayed && urlObject.delayBeforeExecution > 0) {
-                    const self = arguments.callee;
+                    const self = arguments.callee.bind(this);
                     // execute the current method a second time though delayed=true
                     setTimeout(() => self(callback, true), urlObject.delayBeforeExecution);
                     return;
                 }
 
                 this.httpRequest(urlObject, callback, argument);
-            });
+            }.bind(this));
 
             executionCounter[i]--;
             if (executionCounter[i] > 0)

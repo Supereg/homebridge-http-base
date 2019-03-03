@@ -114,7 +114,7 @@ module.exports = {
             urlObject.body = property.body; // TODO allow body only on certain http methods ?!?
 
         if (property.repeat)
-            urlObject.repeat = property.repeat;
+            urlObject.repeat = Math.max(1, property.repeat);
         if (property.delayBeforeExecution)
             urlObject.delayBeforeExecution = property.delayBeforeExecution;
 
