@@ -5,6 +5,8 @@ module.exports = {
             url: undefined,
             method: "GET",
             body: "",
+            repeat: 1,
+            delayBeforeExecution: 0,
             auth: {
                 username: undefined,
                 password: undefined,
@@ -87,6 +89,12 @@ module.exports = {
             throw new Error("'method' must be a string!");
         if (property.body && typeof property.body !== "string")
             throw new Error("'body' must be a string!");
+
+        if (property.repeat && typeof property.repeat !== "number")
+            throw new Error("'repeat' must be a number!");
+        if (property.delayBeforeExecution && typeof property.delayBeforeExecution !== "number")
+            throw new Error("'delayBefireExecution' must be a number!");
+
         if (property.auth && !(property.auth.username && property.auth.password))
             throw new Error("'auth.username' and/or 'auth.password' was not set!");
         // TODO validate property.headers; ensure it is object with key value pair of strings
@@ -104,6 +112,11 @@ module.exports = {
 
         if (property.body)
             urlObject.body = property.body; // TODO allow body only on certain http methods ?!?
+
+        if (property.repeat)
+            urlObject.repeat = property.repeat;
+        if (property.delayBeforeExecution)
+            urlObject.delayBeforeExecution = property.delayBeforeExecution;
 
         if (property.auth) {
             urlObject.auth.username = property.auth.username;

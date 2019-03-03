@@ -83,11 +83,15 @@ module.exports = {
             throw new Error("Empty urlObject array");
 
         const taskArray = new Array(urlObjectArray.length);
+        const executionCounter = [];
 
         for (let i = 0; i < urlObjectArray.length; i++) {
             const urlObject = urlObjectArray[i];
 
-            taskArray[i] = callback => {  // callback gets (error, response, body)
+            if (executionCounter[i] === undefined)
+                executionCounter[i] = urlObject.repeat;
+
+            taskArray.push(callback, delayed => {  // callback gets (error, response, body)
                 if (urlObject.url.startsWith("delay") && delayPattern.test(urlObject.url)) {
                     if (multipleUrlExecutionStrategy !== ExecutionStrategy.SERIES) {
                         console.warn("There was a 'delay' method specified but execution is unaffected because of unsuitable execution strategy!");
@@ -97,12 +101,24 @@ module.exports = {
 
                     const delay = parseInt(urlObject.url.match(numberPattern)[0]);
 
+                    // execute callback from async framework => finish urlObject
                     setTimeout(() => callback(), delay);
                     return;
                 }
 
+                if (!delayed && urlObject.delayBeforeExecution > 0) {
+                    const self = arguments.callee;
+                    // execute the current method a second time though delayed=true
+                    setTimeout(() => self(callback, true), urlObject.delayBeforeExecution);
+                    return;
+                }
+
                 this.httpRequest(urlObject, callback, argument);
-            };
+            });
+
+            executionCounter[i]--;
+            if (executionCounter[i] > 0)
+                i--; // repeat current urlObject
         }
 
         multipleUrlExecutionStrategy(async.reflectAll(taskArray), (ignored, results) => {
