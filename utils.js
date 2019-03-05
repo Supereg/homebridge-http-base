@@ -9,7 +9,7 @@ module.exports = {
         const matchArray = string.match(pattern);
 
         if (matchArray === null) // pattern didn't match at all
-            throw new Error(`Pattern didn't match (value: '${value}', pattern: '${pattern}')`);
+            throw new Error(`Pattern didn't match (value: '${string}', pattern: '${pattern}')`);
         else if (position >= matchArray.length)
             throw new Error("Couldn't find any group which can be extracted. The specified group from whcih the data should be extracted was out of bounds");
         else
