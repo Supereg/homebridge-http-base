@@ -179,7 +179,7 @@ MQTTClient.prototype._message = function (topic, message) {
                 if (this.debug)
                     this.log(`MQTT updating characteristic ${subscription.characteristic} to ${value}`);
                 this.service.getCharacteristic(subscription.characteristic).updateValue(value);
-            }));
+            }), subscription.characteristic);
         } else {
             if (this.debug)
                 this.log(`MQTT updating characteristic ${subscription.characteristic} to ${value}`);
