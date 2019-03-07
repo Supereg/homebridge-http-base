@@ -1,3 +1,5 @@
+const utils = require("../utils");
+
 module.exports = PullTimer;
 
 function PullTimer(log, interval, pullMethod, successHandler) {
@@ -22,7 +24,7 @@ PullTimer.prototype = {
     },
 
     _handleTimer: function () {
-        this.handler(this._once((error, value) => {
+        this.handler(utils.once((error, value) => {
             if (error)
                 this.log("Error occurred while pulling update from switch: " + error.message);
             else
@@ -30,19 +32,6 @@ PullTimer.prototype = {
 
             this.resetTimer();
         }));
-    },
-
-    _once: function (func) {
-        let called = false;
-
-        return function() {
-            if (called)
-                throw new Error("This callback function has already been called by someone else; it can only be called one time.");
-            else {
-                called = true;
-                return func.apply(this, arguments);
-            }
-        };
     }
 
 };

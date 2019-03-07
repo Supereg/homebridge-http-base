@@ -22,6 +22,7 @@
     "mqtt": "^2.18.8"
   },
   "devDependencies": {
-    "hap-nodejs": "^0.4.48"
+    "hap-nodejs": "^0.4.48",
+    "@types/node": "^11.10.5"
   }
 }
