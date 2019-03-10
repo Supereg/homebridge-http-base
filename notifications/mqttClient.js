@@ -105,6 +105,15 @@ MQTTClient.prototype.publish = function (mqttSetTopic, value) {
     })
 };
 
+MQTTClient.prototype.multiplePublish = function (mqttSetTopicArray, value) {
+    if (mqttSetTopicArray.length === 0)
+        throw new Error("Empty mqttSetTopic array");
+
+    mqttSetTopicArray.forEach(mqttSetTopic => {
+        this.publish(mqttSetTopic, value);
+    })
+};
+
 // callback is optional: (error?: Error, packet?: Packet)
 MQTTClient.prototype._publish = function (topic, message, options, callback) {
     this.client.publish(topic, message, options || {}, callback || (error => {
