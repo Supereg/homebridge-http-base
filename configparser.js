@@ -228,6 +228,8 @@ module.exports = {
                 mqttOptions.password = property.credentials.password;
         }
 
+        // TODO parse certificates
+
         mqttOptions.keepalive = property.keepalive;
         mqttOptions.clean = property.clean;
         mqttOptions.reconnectPeriod = property.reconnectPeriod;
