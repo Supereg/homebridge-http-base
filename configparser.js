@@ -24,7 +24,7 @@ module.exports = {
             qos: 0, // TODO should the default be 1?
 
             messagePattern: undefined, // when undefined the whole payload is used as value
-            patternGroupToExtract: undefined, // when non bool characteristic this is used to extract the value of the regex pattern
+            patternGroupToExtract: 1, // when non bool characteristic this is used to extract the value of the regex pattern
         }
     },
 
@@ -339,7 +339,7 @@ module.exports = {
                 subscribeObject.qos = property.qos;
 
             subscribeObject.messagePattern = property.messagePattern;
-            subscribeObject.patternGroupToExtract = property.patternGroupToExtract;
+            subscribeObject.patternGroupToExtract = property.patternGroupToExtract !== undefined? property.patternGroupToExtract:  1;
 
             return subscribeObject;
         } else
