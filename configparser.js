@@ -414,7 +414,7 @@ module.exports = {
 
         const publishObject = this.getEmptyMQTTPublishObject();
 
-        publishObject.topic = topic;
+        publishObject.topic = property.topic;
         if (property.qos !== undefined)
             publishObject.qos = property.qos;
         publishObject.retain = property.retain;
