@@ -25,17 +25,13 @@ function MQTTClient(service, options, log, debug) {
 }
 
 MQTTClient.prototype.connect = function () {
-    if (Object.keys(this.subscriptions).length === 0) {
-        this.log("MQTT no subscriptions specified. MQTT client won't connect");
-        return;
-    }
-
     this.log("MQTT connecting to broker...");
 
     this.client = mqttClient.connect(this.mqttOptions);
     this.client.on("connect", this._connected.bind(this));
     this.client.on("message", this._message.bind(this));
     this.client.on("error", this._error.bind(this));
+    this.client.on("close", () => this.log("MQTT client disconnected!"));
 };
 
 MQTTClient.prototype.end = function (force, closeCallback) {
@@ -79,17 +75,17 @@ MQTTClient.prototype._addSubscription = function (subscription) {
         if (this.client && this.client.connected) {
             this.client.subscribe(subscription.topic, {
                 qos: subscription.qos
-            }, error => {
+            }, (error, granted) => {
                 if (error)
                     this.log.error(`MQTT error occurred while subscribing to topic ${topic}: ${error.message}`);
                 else
-                    this.log(`MQTT successfully subscribed to topic '${topic}'`);
-            })
+                    this.log(`MQTT successfully subscribed to topic '${topic}. Granted ${JSON.stringify(granted)}'`);
+            });
         }
     }
 };
 
-MQTTClient.prototype.publish = function (mqttSetTopic, value) {
+MQTTClient.prototype.publish = function (mqttSetTopic, value, callback) {
     let message = value !== undefined? value.toString(): "";
     if (mqttSetTopic.payloadFormatter) {
         try {
@@ -104,16 +100,17 @@ MQTTClient.prototype.publish = function (mqttSetTopic, value) {
       qos: mqttSetTopic.qos,
       retain: mqttSetTopic.retain,
       dup: mqttSetTopic.dup
-    })
+    }, callback);
 };
 
 MQTTClient.prototype.multiplePublish = function (mqttSetTopicArray, value) {
     if (mqttSetTopicArray.length === 0)
         throw new Error("Empty mqttSetTopic array");
 
+    // TODO execute with async to add support for a callback which is called when all publish was executed on all topics
     mqttSetTopicArray.forEach(mqttSetTopic => {
         this.publish(mqttSetTopic, value);
-    })
+    });
 };
 
 // callback is optional: (error?: Error, packet?: Packet)
@@ -140,11 +137,11 @@ MQTTClient.prototype._connected = function () {
         const subscription = this.subscriptions[topic][0];
         this.client.subscribe(topic, {
             qos: subscription.qos
-        }, error => {
+        }, (error, granted) => {
             if (error)
                 this.log.error(`MQTT error occurred while subscribing to topic ${topic}: ${error.message}`);
             else
-                this.log(`MQTT successfully subscribed to topic '${topic}'`);
+                this.log(`MQTT successfully subscribed to topic '${topic}. Granted ${JSON.stringify(granted)}'`);
         })
     }
 };
