@@ -15,9 +15,11 @@ function MQTTClient(service, options, log, debug) {
     this.debug = debug || false;
 
     this.subscriptions = {};
-    options.subscriptions.forEach(subscription => {
-        this._addSubscription(subscription);
-    });
+    if (options.subscriptions) {
+        options.subscriptions.forEach(subscription => {
+            this._addSubscription(subscription);
+        });
+    }
 
     this.mqttOptions.subscriptions = undefined;
 }
