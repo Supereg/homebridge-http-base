@@ -347,7 +347,7 @@ module.exports = {
     },
 
     parseMQTTSetTopicProperty: function (property) {
-        if (typeof property === "object" && property.constructor === Array)
+        if (typeof property === "object" && property.constructor !== Object)
             throw new Error("property cannot be an array, must be an object!");
 
         const array = this.parseMultipleMQTTSetTopicsProperty(property);
