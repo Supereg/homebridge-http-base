@@ -43,7 +43,7 @@ MQTTClient.prototype.subscribe = function (mqttGetTopic, characteristic) {
     this._addSubscription({
         topic: mqttGetTopic.topic,
         characteristic: characteristic,
-        qos: mqttGetTopic.topic,
+        qos: mqttGetTopic.qos || 0,
         messagePattern: mqttGetTopic.messagePattern,
         patternGroupToExtract: mqttGetTopic.patternGroupToExtract,
     })
@@ -123,27 +123,31 @@ MQTTClient.prototype._publish = function (topic, message, options, callback) {
     }));
 };
 
-MQTTClient.prototype._connected = function () {
+MQTTClient.prototype._connected = function (connack) {
     this.log("MQTT Connected!");
 
-    this.emit("connected");
+    /** @namespace connack.sessionPresent */
+    if (!connack.sessionPresent) {
+        for (const topic in this.subscriptions) {
+            if (!this.subscriptions.hasOwnProperty(topic))
+                continue;
 
-    for (const topic in this.subscriptions) {
-        if (!this.subscriptions.hasOwnProperty(topic))
-            continue;
-
-        // selecting the first will result in the first subscription on a tropic to be responsible for the qos for all other
-        // subscriptions on that same topic. Bit weird but I'm not quite sure how to improve that
-        const subscription = this.subscriptions[topic][0];
-        this.client.subscribe(topic, {
-            qos: subscription.qos
-        }, (error, granted) => {
-            if (error)
-                this.log.error(`MQTT error occurred while subscribing to topic ${topic}: ${error.message}`);
-            else
-                this.log(`MQTT successfully subscribed to topic '${topic}. Granted ${JSON.stringify(granted)}'`);
-        })
+            // selecting the first will result in the first subscription on a tropic to be responsible for the qos for all other
+            // subscriptions on that same topic. Bit weird but I'm not quite sure how to improve that
+            const subscription = this.subscriptions[topic][0];
+            this.log("Subscribing to existing topic: " + topic); // TODO remove
+            this.client.subscribe(topic, {
+                qos: subscription.qos
+            }, (error, granted) => {
+                if (error)
+                    this.log.error(`MQTT error occurred while subscribing to topic ${topic}: ${error.message}`);
+                else
+                    this.log(`MQTT successfully subscribed to topic '${topic}. Granted ${JSON.stringify(granted)}'`);
+            })
+        }
     }
+
+    this.emit("connected");
 };
 
 MQTTClient.prototype._error = function (error) {
