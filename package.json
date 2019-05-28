@@ -18,12 +18,12 @@
   },
   "dependencies": {
     "request": "^2.88.0",
-    "async": "^2.6.2",
-    "mqtt": "^2.18.8"
+    "async": "^3.0.1",
+    "mqtt": "^3.0.0"
   },
   "devDependencies": {
-    "hap-nodejs": "^0.4.48",
-    "@types/node": "^11.11.0",
+    "hap-nodejs": "^0.4.51",
+    "@types/node": "^11.13.11",
     "chalk": "^2.4.2"
   }
 }
