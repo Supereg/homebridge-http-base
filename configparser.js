@@ -88,7 +88,7 @@ module.exports = {
         return array;
     },
 
-    _parseStringUrl: function (url) { // can be outsourced
+    _parseStringUrl: function (url) {
         let urlObject = this.getEmptyUrlObject();
         urlObject.url = url;
 
@@ -365,7 +365,7 @@ module.exports = {
             if (property.constructor === Object) {
                 array.push(this._parseMQTTSetTopicObject(property));
             } else if (property.constructor === Array) {
-                if (property.length() === 0)
+                if (property.length === 0)
                     throw new Error("array cannot be empty");
 
                 for (let i = 0; i < property.length; i++) {

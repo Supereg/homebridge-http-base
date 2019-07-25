@@ -12,6 +12,11 @@ function PullTimer(log, interval, pullMethod, successHandler) {
 PullTimer.prototype = {
 
     start: function () {
+        if (this.timeout) {
+            this.resetTimer();
+            return;
+        }
+
         this.timeout = setTimeout(this._handleTimer.bind(this), this.interval);
     },
 
@@ -21,6 +26,13 @@ PullTimer.prototype = {
 
         clearTimeout(this.timeout);
         this.timeout = setTimeout(this._handleTimer.bind(this), this.interval);
+    },
+
+    stop: function () {
+        if (this.timeout)
+            clearTimeout(this.timeout);
+
+        this.timeout = undefined;
     },
 
     _handleTimer: function () {

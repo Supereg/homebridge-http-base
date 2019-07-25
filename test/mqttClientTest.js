@@ -2,6 +2,7 @@
 This file has a basic structure to test the mqtt client.
 However is currently not automated.
  */
+return;
 
 const Logger = require("./logger").Logger;
 

@@ -4,7 +4,7 @@
   "description": "Base and utils for homebridge-http devices",
   "license": "ISC",
   "scripts": {
-    "test": "node ./test/test.js"
+    "test": "mocha ./test"
   },
   "repository": {
     "type": "git",
@@ -18,12 +18,17 @@
   },
   "dependencies": {
     "request": "^2.88.0",
-    "async": "^3.0.1",
+    "async": "^3.1.0",
     "mqtt": "^3.0.0"
   },
   "devDependencies": {
-    "hap-nodejs": "^0.4.51",
-    "@types/node": "^11.13.11",
-    "chalk": "^2.4.2"
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.6.8",
+    "chai": "^4.2.0",
+    "chalk": "^2.4.2",
+    "hap-nodejs": "^0.4.53",
+    "mocha": "^6.2.0",
+    "nyc": "^14.1.1"
   }
 }
