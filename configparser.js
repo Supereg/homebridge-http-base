@@ -103,8 +103,6 @@ module.exports = {
             throw new Error("'url' must be a string");
         if (property.method !== undefined && typeof property.method !== "string")
             throw new Error("'method' must be a string!");
-        if (property.body !== undefined && typeof property.body !== "string")
-            throw new Error("'body' must be a string!");
 
         if (property.repeat !== undefined && typeof property.repeat !== "number")
             throw new Error("'repeat' must be a number!");
@@ -126,8 +124,14 @@ module.exports = {
         if (property.method)
             urlObject.method = property.method;
 
-        if (property.body)
-            urlObject.body = property.body; // TODO allow body only on certain http methods ?!?
+        if (property.body) {
+            // TODO allow body only on certain http methods ?!?
+            if (typeof property.body === "string") {
+                urlObject.body = property.body;
+            } else {
+                urlObject.body = JSON.stringify(property.body);
+            }
+        }
 
         if (property.repeat)
             urlObject.repeat = Math.max(1, property.repeat);

@@ -87,6 +87,21 @@ describe("Config Parser", function () {
             expect(urlObject.requestTimeout).to.equal(object.requestTimeout);
         });
 
+        it('should accept object as body property', function () {
+            const object = {
+                url: "https://google.com",
+                method: "POST",
+                body: {
+                    here: "is a string",
+                    and: ["a", {nested: "object"}]
+                }
+            };
+
+            const urlObject = configParser.parseUrlProperty(object);
+            expect(typeof urlObject.body).to.equal("string");
+            expect(urlObject.body).to.equal('{"here":"is a string","and":["a",{"nested":"object"}]}');
+        });
+
         // TODO add test cases to ensure illegal data types for urlObject fields get rejected
     });
 
