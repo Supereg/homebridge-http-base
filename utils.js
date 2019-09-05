@@ -56,6 +56,20 @@ module.exports = {
         }
 
         return false;
+    },
+
+    getCharacteristic: function (service, name) {
+        let characteristic;
+        for (let index in service.characteristics) {
+           characteristic = service.characteristics[index];
+
+           const strippedName = characteristic.displayName.replace(' ', '');
+           if (strippedName === name) {
+               return characteristic;
+           }
+        }
+
+        return null;
     }
 
 };
