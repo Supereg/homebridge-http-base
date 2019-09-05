@@ -49,7 +49,7 @@ module.exports = {
         for (index in service.characteristics) {
             characteristic = service.characteristics[index];
 
-            const strippedName = characteristic.displayName.replace(' ', '');
+            const strippedName = characteristic.displayName.replace(/ /g, '');
             if (strippedName === name) {
                 return true;
             }
@@ -63,7 +63,7 @@ module.exports = {
         for (let index in service.characteristics) {
            characteristic = service.characteristics[index];
 
-           const strippedName = characteristic.displayName.replace(' ', '');
+           const strippedName = characteristic.displayName.replace(/ /g, '');
            if (strippedName === name) {
                return characteristic;
            }
