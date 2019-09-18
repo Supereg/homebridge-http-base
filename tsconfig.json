@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+
+    "declaration": true,
+    "sourceMap": true,
+    "declarationMap": true,
+
+    "outDir": "dist",
+    "rootDir": "./src",
+
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "strict": true
+  },
+  "include": [
+    "src/"
+  ],
+  "exclude": [
+    "**/*.spec.ts"
+  ]
+}
