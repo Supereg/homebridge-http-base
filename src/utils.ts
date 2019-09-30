@@ -11,7 +11,7 @@ export function extractValueFromPattern(pattern: RegExp, string: string, positio
         return matchArray[position];
 }
 
-export function enumValueOf(enumObject: any, property: any, defaultValue: any): any {
+export function enumValueOf(enumObject: Record<string, string>, property: string | undefined, defaultValue: string): any {
     let value = property || defaultValue;
     value = value.toLowerCase();
 
