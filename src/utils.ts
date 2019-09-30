@@ -1,9 +1,6 @@
 import {Service} from "hap-nodejs";
 
-export function extractValueFromPattern(pattern: RegExp, string: string, position: number): string {
-    if (typeof position === "undefined")
-        position = 1; // default value
-
+export function extractValueFromPattern(pattern: RegExp, string: string, position: number = 1): string {
     const matchArray = string.match(pattern);
 
     if (matchArray === null) // pattern didn't match at all
