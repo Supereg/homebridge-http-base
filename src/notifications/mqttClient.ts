@@ -1,4 +1,3 @@
-import EventEmitter = NodeJS.EventEmitter;
 import {Service} from "hap-nodejs";
 import {
     CloseCallback,
@@ -12,6 +11,7 @@ import {
 } from "mqtt";
 import {utils} from "../index";
 import {MQTTPublishObject, MQTTSubscribeObject, MQTTSubscriptionObject} from "../configparser";
+import {EventEmitter} from "events";
 const mqttClient = require('mqtt');
 
 export type MQTTSubscription = {
