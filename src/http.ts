@@ -52,6 +52,10 @@ export function isHttpSuccessCode(statusCode: number) {
     return Math.floor(statusCode / 100) === 2;
 }
 
+export function isHttpRedirectCode(statusCode: number) {
+    return Math.floor(statusCode / 100) === 3;
+}
+
 export function httpRequest(urlObject: UrlObject, callback: RequestCallback) {
     let url = urlObject.url;
     let body = urlObject.body;
