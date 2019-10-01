@@ -30,7 +30,7 @@ export type ErrorResponseObject = {
 }
 
 export type ResponseObject = {
-    response: string,
+    response: Response,
     body: string
 }
 
