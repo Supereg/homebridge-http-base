@@ -34,7 +34,10 @@ export type ResponseObject = {
     body: string
 }
 
-
+export type BodyReplacer = {
+    searchValue: string,
+    replacer: string,
+}
 
 let multipleUrlExecutionStrategy = ExecutionStrategy.PARALLEL;
 
@@ -56,7 +59,7 @@ export function isHttpRedirectCode(statusCode: number) {
     return Math.floor(statusCode / 100) === 3;
 }
 
-export function httpRequest(urlObject: UrlObject, callback: RequestCallback) {
+export function httpRequest(urlObject: UrlObject, callback: RequestCallback, ...bodyReplacer: BodyReplacer[]) {
     let url = urlObject.url;
     let body = urlObject.body;
     let auth: AuthOptions | undefined = undefined;
@@ -71,22 +74,12 @@ export function httpRequest(urlObject: UrlObject, callback: RequestCallback) {
             auth.sendImmediately = urlObject.auth.sendImmediately;
     }
 
-    for (let i = 2; i < arguments.length; i++) {
-        const element = arguments[i];
-        if (typeof element !== "object")
-            continue;
-
-        let args = element;
-        if (element.constructor === Object)
-            args = [element];
-
-        for (let j = 0; j < args.length; j++) {
-            const argument = args[j];
-            url = url.replace(argument.searchValue, argument.replacer);
-            if (body)
-                body = body.replace(argument.searchValue, argument.replacer);
+    bodyReplacer.forEach(replacer => {
+        url = url.replace(replacer.searchValue, replacer.replacer);
+        if (body) {
+            body = body.replace(replacer.searchValue, replacer.replacer);
         }
-    }
+    });
 
     request(
         {
