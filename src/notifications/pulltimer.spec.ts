@@ -1,11 +1,11 @@
 import {PullTimer} from "./pulltimer";
 
-let pullTimer: PullTimer;
-let value: number | undefined;
-
 describe("PullTimer", function () {
     describe("execution", function () {
+        let pullTimer: PullTimer;
+        let value: number | undefined;
         beforeAll(function () {
+
             pullTimer = new PullTimer(console.log, 20, callback => callback(null, value? value + 1: 1),
                 v => value = v);
             pullTimer.start();
@@ -22,23 +22,25 @@ describe("PullTimer", function () {
             setTimeout(() => {
                 expect(value).toEqual(1);
                 done();
-            }, 22)
+            }, 21)
         });
         it('should be 2 after second execution', function (done) {
             setTimeout(() => {
                 expect(value).toEqual(2);
                 done();
-            }, 22)
+            }, 21)
         });
         it('should be 3 after third execution', function (done) {
             setTimeout(() => {
                 expect(value).toEqual(3);
                 done();
-            }, 22)
+            }, 21)
         });
     });
 
     describe("reset", function () {
+        let pullTimer: PullTimer;
+        let value: number | undefined;
         beforeAll(function () {
             pullTimer = new PullTimer(console.log, 5, callback => callback(null, value? value + 1: 1),
                 v => value = v);
