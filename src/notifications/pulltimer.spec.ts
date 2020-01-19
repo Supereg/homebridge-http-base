@@ -22,19 +22,19 @@ describe("PullTimer", function () {
             setTimeout(() => {
                 expect(value).toEqual(1);
                 done();
-            }, 20)
+            }, 22)
         });
-        it('should be 2 after first execution', function (done) {
+        it('should be 2 after second execution', function (done) {
             setTimeout(() => {
                 expect(value).toEqual(2);
                 done();
-            }, 20)
+            }, 22)
         });
-        it('should be 3 after first execution', function (done) {
+        it('should be 3 after third execution', function (done) {
             setTimeout(() => {
                 expect(value).toEqual(3);
                 done();
-            }, 20)
+            }, 22)
         });
     });
 
