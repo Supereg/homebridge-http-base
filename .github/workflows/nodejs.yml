@@ -30,8 +30,8 @@ jobs:
         env:
           CI: true
 
-  publish:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+  publish-npm:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
 
     needs: build
 
@@ -42,10 +42,27 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 10
-      - name: npm publish (if version has been updated)
-        uses: houtianze/npm-publish-action@master
-        with:
-          commit_pattern: "^(\\S+)"
+          registry-url: https://registry.npmjs.org/
+      - run: npm ci
+      - run: npm publish
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_AUTH_TOKEN: ${{ secrets.npm_token }}
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+
+  publish-gpr:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+
+    needs: build
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 10
+          registry-url: https://npm.pkg.github.com/
+          scope: '@Supereg'
+      - run: npm ci
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
