@@ -63,6 +63,7 @@ jobs:
           registry-url: https://npm.pkg.github.com/
           scope: '@Supereg'
       - run: npm ci
+      - run: echo registry=https://npm.pkg.github.com/Supereg >> .npmrc # Values above don't seem to be honored
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
