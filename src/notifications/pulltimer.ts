@@ -19,25 +19,24 @@ export class PullTimer {
     }
 
     start() {
-        if (this.timeout) {
-            this.resetTimer();
-            return;
+        if (!this.timeout) {
+            this.timeout = setTimeout(this.handleTimer.bind(this), this.interval);
+        } else {
+            this.timeout.refresh();
         }
-
-        this.timeout = setTimeout(this.handleTimer.bind(this), this.interval);
     }
 
     resetTimer() {
         if (!this.timeout)
             return;
 
-        clearTimeout(this.timeout);
-        this.timeout = setTimeout(this.handleTimer.bind(this), this.interval);
+        this.timeout.refresh();
     }
 
     stop() {
-        if (this.timeout)
+        if (this.timeout) {
             clearTimeout(this.timeout);
+        }
 
         this.timeout = undefined;
     }
