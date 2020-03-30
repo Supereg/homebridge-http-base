@@ -27,6 +27,11 @@ export class UrlObject {
     }
 }
 
+export type HeaderKeyValues = {
+    key: string,
+    value: string,
+}
+
 export type MQTTSubscriptionObject = {
     subscriptions: MQTTSubscription[];
 }
@@ -130,7 +135,31 @@ function _parseUrlObject(property: any) {
 
     if (property.auth !== undefined && !(property.auth.username && property.auth.password))
         throw new Error("'auth.username' and/or 'auth.password' was not set!");
-    // TODO validate property.headers; ensure it is object with key value pair of strings
+    if (property.headers !== undefined) {
+        if (typeof property.headers !== "object") {
+            throw new Error("'auth.headers' must be an object");
+        }
+
+        if (property.headers.constructor === Object) { // legacy style key value pairs
+            const stringOnlyValues = Object.values(property.headers)
+                .map(value => typeof value === "string")
+                .reduce((prev, cur) => prev && cur);
+
+            if (!stringOnlyValues) {
+                throw new Error("'auth.headers' must only contain key-value pairs of type string!");
+            }
+        } else if (property.headers.constructor === Array) { // object array style (engineered for homebridge config ui)
+            const keyValueObjects = property.headers
+                .map((pair: HeaderKeyValues) => pair.key !== undefined && pair.value !== undefined)
+                .reduce((prev: boolean, cur: boolean) => prev && cur);
+
+            if (!keyValueObjects) {
+                throw new Error("'auth.headers' must only contain key-value pairs in proper object format!")
+            }
+        } else {
+            throw new Error("'auth.headers' has unknown constructor");
+        }
+    }
     if (property.strictSSL !== undefined && typeof property.strictSSL !== "boolean")
         throw new Error("'strictSSL' must be a boolean!");
     if (property.requestTimeout !== undefined && typeof property.requestTimeout !== "number")
@@ -163,8 +192,15 @@ function _parseUrlObject(property: any) {
             urlObject.auth.sendImmediately = property.auth.sendImmediately;
     }
 
-    if (property.headers)
-        urlObject.headers = property.headers;
+    if (property.headers) {
+        if (property.headers.constructor === Array) {
+            const headers: Record<string, string> = {};
+            property.headers.forEach((pair: HeaderKeyValues) => headers[pair.key] = pair.value);
+            urlObject.headers = headers;
+        } else {
+            urlObject.headers = property.headers;
+        }
+    }
 
     if (property.strictSSL)
         urlObject.strictSSL = property.strictSSL;

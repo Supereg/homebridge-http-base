@@ -66,7 +66,10 @@ describe("Config Parser", function () {
                     password: "123456",
                     sendImmediately: true
                 },
-                headers: {"Content-Type": "text/html"},
+                headers: {
+                    "Content-Type": "text/html",
+                    "Content-Encoding": "gzip"
+                },
                 strictSSL: true,
                 requestTimeout: 1234
             };
@@ -80,6 +83,7 @@ describe("Config Parser", function () {
             expect(urlObject.auth.password).toEqual(object.auth.password);
             expect(urlObject.auth.sendImmediately).toEqual(object.auth.sendImmediately);
             expect(urlObject.headers["Content-Type"]).toEqual("text/html");
+            expect(urlObject.headers["Content-Encoding"]).toEqual("gzip");
             expect(urlObject.strictSSL).toEqual(object.strictSSL);
             expect(urlObject.requestTimeout).toEqual(object.requestTimeout);
         });
@@ -97,6 +101,26 @@ describe("Config Parser", function () {
             const urlObject = configParser.parseUrlProperty(object);
             expect(typeof urlObject.body).toEqual("string");
             expect(urlObject.body).toEqual('{"here":"is a string","and":["a",{"nested":"object"}]}');
+        });
+
+        it('should properly convert key-value objects passed to headers', function () {
+            const object = {
+                url: "https://google.com",
+                headers: [
+                    {
+                        "key": "Content-Type",
+                        "value": "text/html"
+                    },
+                    {
+                        "key": "Content-Encoding",
+                        "value": "gzip"
+                    }
+                ]
+            };
+
+            const urlObject = configParser.parseUrlProperty(object);
+            expect(urlObject.headers["Content-Type"]).toEqual("text/html");
+            expect(urlObject.headers["Content-Encoding"]).toEqual("gzip");
         });
 
         // TODO add test cases to ensure illegal data types for urlObject fields get rejected
