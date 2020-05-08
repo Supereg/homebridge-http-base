@@ -9,10 +9,12 @@ export function enqueueNotificationRegistrationIfDefined(api: any, log: typeof c
                                                          handler: (body: NotificationRequestBody) => void) {
     if (notificationID) {
         api.on('didFinishLaunching', () => {
-            /** @namespace api.notificationRegistration */
-            if (api.notificationRegistration && typeof api.notificationRegistration === "function") {
+            // @ts-ignore
+            const registration = global.notificationRegistration || api.notificationRegistration;
+
+            if (registration && typeof registration === "function") {
                 try {
-                    api.notificationRegistration(notificationID, handler, notificationPassword);
+                    registration(notificationID, handler, notificationPassword);
                     log("Detected running notification server. Registered successfully!");
                 } catch (error) {
                     log("Could not register notification handler. ID '" + notificationID + "' is already taken!")
