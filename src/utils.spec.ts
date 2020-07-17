@@ -1,5 +1,4 @@
 import {utils} from "./index";
-import {HumiditySensor} from "hap-nodejs/dist/lib/gen/HomeKit";
 import {Characteristic, Service} from "hap-nodejs";
 
 describe("utils", function () {
@@ -53,7 +52,7 @@ describe("utils", function () {
     describe("characteristics search", function () {
         let service: Service | undefined;
         beforeAll(function () {
-            service = new HumiditySensor('', '');
+            service = new Service.HumiditySensor('', '');
         });
 
         it('should test added characteristic', function () {
