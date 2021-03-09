@@ -1,4 +1,4 @@
-import {Service} from "hap-nodejs";
+import {Formats, Service} from "hap-nodejs";
 import {
     CloseCallback,
     MqttClient,
@@ -91,7 +91,7 @@ export class MQTTClient extends EventEmitter {
         // getCharacteristic would create new characteristic, if it does not exists and is an optional one
         // however we tested above if its there, so this operation is save
         const hapCharacteristic = utils.getCharacteristic(this.service, characteristicName)!;
-        let isBool = typeof hapCharacteristic.getDefaultValue() === "boolean";
+        let isBool = hapCharacteristic.props.format === Formats.BOOL;
 
         const internalSubscriptionObject: InternalMQTTSubscription = {
             characteristic: characteristicName,
