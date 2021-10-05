@@ -124,7 +124,7 @@ export class MQTTClient extends EventEmitter {
             try {
                 message = mqttSetTopic.payloadFormatter(value);
             } catch (error) {
-                this.log.warn(`Error occurred while executing payload formatter for topic ${mqttSetTopic.topic} with value '${value}': ${error.message}`);
+                this.log.warn(`Error occurred while executing payload formatter for topic ${mqttSetTopic.topic} with value '${value}': ${(error as Error).message}`);
                 this.log.warn(``);
             }
         }

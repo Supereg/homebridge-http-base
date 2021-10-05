@@ -106,7 +106,7 @@ export function parseMultipleUrlProperty(property: any): UrlObject[] {
                         throw new Error("Wrong data type. Expected string or object");
                     }
                 } catch (error) {
-                    throw new Error(`error caught on array element at index ${i}: ${error.message}`);
+                    throw new Error(`error caught on array element at index ${i}: ${(error as Error).message}`);
                 }
             }
         } else if (property.constructor === Object) {
@@ -327,7 +327,7 @@ export function parseMQTTSubscriptions(property: any) {
                 const subscription = _parseMQTTSubscriptionObject(element);
                 mqttSubscriptions.push(subscription);
             } catch (error) {
-                throw new Error(`error caught on array element at index ${i}: ${error.message}`);
+                throw new Error(`error caught on array element at index ${i}: ${(error as Error).message}`);
             }
         }
     } else
@@ -437,7 +437,7 @@ export function parseMultipleMQTTSetTopicsProperty(property: any) {
                         throw new Error("Wrong data type. Expected string or object");
                     }
                 } catch (error) {
-                    throw new Error(`error caught on array element at index ${i}: ${error.message}`);
+                    throw new Error(`error caught on array element at index ${i}: ${(error as Error).message}`);
                 }
             }
         }

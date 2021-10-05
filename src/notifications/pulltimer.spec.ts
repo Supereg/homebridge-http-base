@@ -6,7 +6,7 @@ describe("PullTimer", function () {
         let value: number | undefined;
         beforeAll(function () {
 
-            pullTimer = new PullTimer(console.log, 20, callback => callback(null, value? value + 1: 1),
+            pullTimer = new PullTimer(console.log, 200, callback => callback(null, value? value + 1: 1),
                 v => value = v);
             pullTimer.start();
         });
@@ -15,34 +15,23 @@ describe("PullTimer", function () {
             value = undefined;
         });
 
-        it('should be undefined before timer was executed', function () {
+        test('undefined before timer was executed', function () {
             expect(value).toBeUndefined();
         });
-        it('should be 1 after first execution', function (done) {
+
+        test('should be greater equal 1 after 200ms', function (done) {
             setTimeout(() => {
-                expect(value).toEqual(1);
-                done();
-            }, 21)
-        });
-        it('should be 2 after second execution', function (done) {
-            setTimeout(() => {
-                expect(value).toEqual(2);
-                done();
-            }, 21)
-        });
-        it('should be 3 after third execution', function (done) {
-            setTimeout(() => {
-                expect(value).toEqual(3);
-                done();
-            }, 21)
-        });
+                expect(value).toBeGreaterThanOrEqual(1)
+                done()
+            }, 200)
+        })
     });
 
     describe("reset", function () {
         let pullTimer: PullTimer;
         let value: number | undefined;
         beforeAll(function () {
-            pullTimer = new PullTimer(console.log, 5, callback => callback(null, value? value + 1: 1),
+            pullTimer = new PullTimer(console.log, 200, callback => callback(null, value? value + 1: 1),
                 v => value = v);
             pullTimer.start();
         });
@@ -56,16 +45,16 @@ describe("PullTimer", function () {
 
             setTimeout(() => {
                 expect(value).toBeUndefined();
-                pullTimer.resetTimer();
+                pullTimer.resetTimer(); // reset means timer runs another 200 ms
 
                 setTimeout(() => {
                     expect(value).toBeUndefined();
                     setTimeout(() => {
                         expect(value).toEqual(1);
                         done();
-                    }, 3);
-                }, 2);
-            }, 2);
+                    }, 150);
+                }, 100);
+            }, 50);
         });
     })
 });
